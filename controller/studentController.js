@@ -65,7 +65,7 @@ const studentUpdate = (req, res) => {
 const studentDelete = (req, res) => {
   let id = req.params.id;
   let index = data.findIndex((studentObject) => {
-    return studentObject.id == Number.parseInt(id);
+    return studentObject.id ===id;
   });
 
   if (index >= 0) {
@@ -75,6 +75,16 @@ const studentDelete = (req, res) => {
   } else {
     res.send("Data Not found");
   }
+  let studentJson = JSON.stringify(data);
+  //   //perform file write operation
+  fs.writeFile("./Data.json", studentJson, (error) => {
+    if (error) {
+      console.log("wrong");
+    } else {
+      console.log("data save successfully....");
+    }
+    res.send("Record deleted Successfully");
+  });
 };
 
 module.exports = { studentDisplay, studentAdd, studentUpdate, studentDelete };
