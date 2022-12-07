@@ -3,20 +3,20 @@ const bodyParser = require("body-parser");
 const {studentDisplay,studentAdd,studentUpdate,studentDelete} = require("../controller/studentController");
 const router = express.Router();
 
-router.use(bodyParser.urlencoded({ extended: false }));
+//router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
 
 //save student data into json file
-router.post("/studentadd",studentAdd);
+router.post("/user",studentAdd);
   
   //student data display
-  router.get("/studentdisplay",studentDisplay);
+  router.get("/user",studentDisplay);
   
   // student data update
-  router.put("/studentupdate/:id",studentUpdate );
+  router.put("/user/:id",studentUpdate );
   
   //deleting student
-  router.delete("/studentdelete/:id",studentDelete );
+  router.delete("/user/:id",studentDelete );
 
   module.exports = router  
