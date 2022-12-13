@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const {studentDisplay,studentAdd,studentUpdate,studentDelete} = require("../controller/studentController");
+const {studentDisplay,singleStudentDisplay,studentAdd,studentUpdate,studentDelete} = require("../controller/studentController");
 const router = express.Router();
 
 //router.use(bodyParser.urlencoded({ extended: false }));
@@ -12,7 +12,9 @@ router.post("/user",studentAdd);
   
   //student data display
   router.get("/user",studentDisplay);
-  
+
+  //get single student data 
+  router.get('/user/:id', singleStudentDisplay)
   // student data update
   router.put("/user/:id",studentUpdate );
   

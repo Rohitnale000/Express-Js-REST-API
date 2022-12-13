@@ -87,4 +87,18 @@ const studentDelete = (req, res) => {
   });
 };
 
-module.exports = { studentDisplay, studentAdd, studentUpdate, studentDelete };
+//display single record
+const singleStudentDisplay =(req, res) => {
+  let id = req.params.id;
+ let index = data.findIndex((studentObject)=>{
+    return studentObject.id === id;
+ })
+ if (index >= 0) {
+  let singleStudent = data[index];
+  res.send(singleStudent);
+} else {
+  res.send("Data Not found");
+}
+ }
+ 
+module.exports = { studentDisplay,singleStudentDisplay, studentAdd, studentUpdate, studentDelete };
