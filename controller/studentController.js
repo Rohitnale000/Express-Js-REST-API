@@ -1,7 +1,7 @@
 const fs = require("fs");
 const data = require("../Data.json");
 const { v4: uuidv4 } = require("uuid");
-
+const validator = require("validator");
 
 // display student data
 const studentDisplay = (req, res) => {
@@ -10,42 +10,51 @@ const studentDisplay = (req, res) => {
 
 //save data into the file
 const studentAdd = (req, res) => {
-  res.end(JSON.stringify(req.body, null, 2));
-  const id = uuidv4();
-  let studentObject = {
-    id: id,
-    firstName: req.body.firstName,
-    email: req.body.email,
-  };
-  data.push(studentObject);
-  console.log(data);
-  //convert studentArray into JSON string
-  let studentJson = JSON.stringify(data);
-  //   //perform file write operation
-  fs.writeFile("./Data.json", studentJson, (error) => {
-    if (error) {
-      console.log("wrong");
+  if (
+    validator.isEmpty(req.body.firstName) != true &&
+    validator.isLength(req.body.firstName, { min: 3 }) == true &&
+    validator.isAlpha(req.body.firstName) == true
+  ) {
+    if (validator.isEmail(req.body.email) == true) {
+      const id = uuidv4();
+      let studentObject = {
+        id: id,
+        firstName: req.body.firstName,
+        email: req.body.email,
+      };
+      data.push(studentObject);
+      console.log(data);
+      //convert studentArray into JSON string
+      let studentJson = JSON.stringify(data);
+      //   //perform file write operation
+      fs.writeFile("./Data.json", studentJson, (error) => {
+        if (error) {
+          res.send("wrong");
+        } else {
+          res.send("data save successfully....");
+        }
+      });
     } else {
-      console.log("data save successfully....");
+      res.send("Enter Valid Email Address");
     }
-  });
+  } else {
+    res.send("enter valid name");
+  }
 };
-
 
 //update student
 const studentUpdate = (req, res) => {
   let id = req.params.id;
-  let firstName= req.body.firstName;
+  let firstName = req.body.firstName;
   let email = req.body.email;
 
   let index = data.findIndex((studentObject) => {
     return studentObject.id === id;
   });
-  if (index>=0) {
+  if (index >= 0) {
     let stud = data[index];
     stud.firstName = firstName;
     stud.email = email;
-   
   } else {
     res.status("record not found");
   }
@@ -65,7 +74,7 @@ const studentUpdate = (req, res) => {
 const studentDelete = (req, res) => {
   let id = req.params.id;
   let index = data.findIndex((studentObject) => {
-    return studentObject.id ===id;
+    return studentObject.id === id;
   });
 
   if (index >= 0) {
@@ -88,17 +97,23 @@ const studentDelete = (req, res) => {
 };
 
 //display single record
-const singleStudentDisplay =(req, res) => {
+const singleStudentDisplay = (req, res) => {
   let id = req.params.id;
- let index = data.findIndex((studentObject)=>{
+  let index = data.findIndex((studentObject) => {
     return studentObject.id === id;
- })
- if (index >= 0) {
-  let singleStudent = data[index];
-  res.send(singleStudent);
-} else {
-  res.send("Data Not found");
-}
- }
- 
-module.exports = { studentDisplay,singleStudentDisplay, studentAdd, studentUpdate, studentDelete };
+  });
+  if (index >= 0) {
+    let singleStudent = data[index];
+    res.send(singleStudent);
+  } else {
+    res.send("Data Not found");
+  }
+};
+
+module.exports = {
+  studentDisplay,
+  singleStudentDisplay,
+  studentAdd,
+  studentUpdate,
+  studentDelete,
+};
