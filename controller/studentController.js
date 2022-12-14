@@ -48,26 +48,47 @@ const studentUpdate = (req, res) => {
   let firstName = req.body.firstName;
   let email = req.body.email;
 
-  let index = data.findIndex((studentObject) => {
-    return studentObject.id === id;
-  });
-  if (index >= 0) {
-    let stud = data[index];
-    stud.firstName = firstName;
-    stud.email = email;
-  } else {
-    res.status("record not found");
-  }
-  let studentJson = JSON.stringify(data);
-  //   //perform file write operation
-  fs.writeFile("./Data.json", studentJson, (error) => {
-    if (error) {
-      console.log("wrong");
-    } else {
-      console.log("data save successfully....");
+  if (
+    validator.isEmpty(firstName) != true &&
+    validator.isLength(firstName, { min: 3 }) == true &&
+    validator.isAlpha(firstName) == true
+  ) {
+    if (validator.isEmail(req.body.email) == true) {
+
+
+      let index = data.findIndex((studentObject) => {
+        return studentObject.id === id;
+      });
+      if (index >= 0) {
+        let stud = data[index];
+        stud.firstName = firstName;
+        stud.email = email;
+      } else {
+        res.status("record not found");
+      }
+      let studentJson = JSON.stringify(data);
+      //   //perform file write operation
+      fs.writeFile("./Data.json", studentJson, (error) => {
+        if (error) {
+          console.log("wrong");
+        } else {
+          console.log("data save successfully....");
+        }
+        res.send("Record updated Successfully");
+      });
+
+
+    }else {
+      res.send("Enter Valid Email Address");
     }
-    res.send("Record updated Successfully");
-  });
+
+
+  }else {
+    res.send("enter valid name");
+  }
+
+
+  
 };
 
 //delete specific record
