@@ -3,6 +3,7 @@ const data = require("../Data.json");
 const { v4: uuidv4 } = require("uuid");
 const validator = require("validator");
 
+
 // display student data
 const studentDisplay = (req, res) => {
   res.send(data);
@@ -10,11 +11,7 @@ const studentDisplay = (req, res) => {
 
 //save data into the file
 const studentAdd = (req, res) => {
-  if (
-    validator.isEmpty(req.body.firstName) != true &&
-    validator.isLength(req.body.firstName, { min: 3 }) == true &&
-    validator.isAlpha(req.body.firstName) == true
-  ) {
+
     if (validator.isEmail(req.body.email) == true) {
       const id = uuidv4();
       let studentObject = {
@@ -31,15 +28,13 @@ const studentAdd = (req, res) => {
         if (error) {
           res.send("wrong");
         } else {
-          res.send("data save successfully....");
+          res.send(studentObject);
         }
       });
     } else {
       res.send("Enter Valid Email Address");
     }
-  } else {
-    res.send("enter valid name");
-  }
+ 
 };
 
 //update student
@@ -49,8 +44,7 @@ const studentUpdate = (req, res) => {
   let email = req.body.email;
 
   if (
-    validator.isEmpty(firstName) != true &&
-    validator.isLength(firstName, { min: 3 }) == true &&
+    validator.isLength(firstName, { min: 1 }) == true &&
     validator.isAlpha(firstName) == true
   ) {
     if (validator.isEmail(req.body.email) == true) {
@@ -113,7 +107,7 @@ const studentDelete = (req, res) => {
     } else {
       console.log("data save successfully....");
     }
-    res.send("Record deleted Successfully");
+    res.send(id);
   });
 };
 

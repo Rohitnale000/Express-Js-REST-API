@@ -1,10 +1,10 @@
 const express = require("express");
-const bodyParser = require("body-parser");
+//const bodyParser = require("body-parser");
 const {studentDisplay,singleStudentDisplay,studentAdd,studentUpdate,studentDelete} = require("../controller/studentController");
 const router = express.Router();
 
-//router.use(bodyParser.urlencoded({ extended: false }));
-router.use(bodyParser.json());
+ //router.use(bodyParser.urlencoded({ extended: false }));
+ //router.use(bodyParser.json());
 
 
 //save student data into json file

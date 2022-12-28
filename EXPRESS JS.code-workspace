@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "../../AJAX"
+		},
+		{
+			"path": "../../Front-End"
 		}
 	],
 	"settings": {
